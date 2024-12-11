@@ -1,59 +1,73 @@
 const Product = require("../models/product");
 
-// CRUD functions
-// get all products
-const getProducts = async (category) => {
+// get all product
+const getProducts = async (name, description, price, category) => {
   let filter = {};
-  // if genre exists, pass it to the filter container
+
+  if (name) {
+    filter.name = name;
+  }
+
+  if (description) {
+    filter.description = description;
+  }
+
+  if (price) {
+    filter.price = { $gt: price };
+  }
+
   if (category) {
     filter.category = category;
   }
 
-  // apply filter in .find();
   const products = await Product.find(filter);
   return products;
 };
 
-// get one product
+// get one product by id
 const getProduct = async (id) => {
   const product = await Product.findById(id);
   return product;
 };
 
-const addNewProduct = async (name, description, price, category) => {
-  // create new product
+// add one product
+const addProduct = async (name, description, price, category) => {
   const newProduct = new Product({
-    id,
     name,
     description,
     price,
     category,
   });
-  // save the new product into mongodb
   await newProduct.save();
   return newProduct;
 };
 
-// update product
+// update by id
 const updateProduct = async (id, name, description, price, category) => {
   const updatedProduct = await Product.findByIdAndUpdate(
     id,
-    { name, description, price, category },
-    // return back the new data
-    { new: true }
+    {
+      name,
+      description,
+      price,
+      category,
+    },
+    {
+      new: true,
+    }
   );
   return updatedProduct;
 };
 
-// delete product
+// delete by id
 const deleteProduct = async (id) => {
   return await Product.findByIdAndDelete(id);
 };
 
 module.exports = {
   getProducts,
+  addProduct,
   getProduct,
-  addNewProduct,
   updateProduct,
-  deleteProduct,
+  deleteProduct
 };

@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
 
-const { getCategories } = require("../controllers/category");
+const { getCategories } = require("../controller/category");
 
 router.get("/", async (req, res) => {
   const categories = await getCategories();

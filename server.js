@@ -1,36 +1,33 @@
 // import express
 const express = require("express");
-
-// import mongoose
 const mongoose = require("mongoose");
+// const cors = require("cors");
 
 // create the express app
 const app = express();
 
-// middleware to handle JSON request (body)
+// middleware to handle JSON request
 app.use(express.json());
 
 // connect to MongoDB
 mongoose
-  .connect("mongodb://127.0.0.1:27017/e_commerce")
+  .connect("mongodb://1227.0.0.1:27017/e-commerce")
   .then(() => {
-    // if mongodbb is successfully connected
+    // if mongoDB is successfully connected
     console.log("MongoDB is connected");
   })
   .catch((error) => {
-    console.log(error);
+    error("MongoDB is not connected");
   });
 
 // root route
 app.get("/", (req, res) => {
-  res.send("Happy Coding!");
+  res.send("Happy coding!");
 });
 
-// import all the routes
 const productRouter = require("./routes/product");
 const categoryRouter = require("./routes/category");
 
-// define urls for routers
 app.use("/products", productRouter);
 app.use("/categories", categoryRouter);
 
