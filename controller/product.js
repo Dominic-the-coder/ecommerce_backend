@@ -24,6 +24,7 @@ const addNewProduct = async (name, description, price, category) => {
     price,
     category,
   });
+  // save the new product into mongodb
   await newProduct.save();
   return newProduct;
 };
@@ -53,8 +54,6 @@ const getCategory = async (category) => {
   const product = await Product.find(category);
   return product;
 };
-
-
 
 module.exports = {
   getProducts,
