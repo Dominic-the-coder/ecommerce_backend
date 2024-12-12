@@ -5,7 +5,9 @@ const productSchema = new Schema({
     type: String,
     required: true,
   },
-  description: String,
+  description: {
+    type: String,
+  },
   price: {
     type: Number,
     required: true,
@@ -17,4 +19,5 @@ const productSchema = new Schema({
 });
 
 const Product = model("Product", productSchema);
+
 module.exports = Product;

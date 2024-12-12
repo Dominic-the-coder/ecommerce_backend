@@ -1,37 +1,23 @@
 const Product = require("../models/product");
 
-// get all product
-const getProducts = async (name, description, price, category) => {
+//get all products
+const getProducts = async (category) => {
   let filter = {};
-
-  if (name) {
-    filter.name = name;
-  }
-
-  if (description) {
-    filter.description = description;
-  }
-
-  if (price) {
-    filter.price = { $gt: price };
-  }
-
   if (category) {
     filter.category = category;
   }
-
-  const products = await Product.find(filter);
-  return products;
+  const product = await Product.find(filter);
+  return product;
 };
 
-// get one product by id
+//get one product
 const getProduct = async (id) => {
   const product = await Product.findById(id);
   return product;
 };
 
-// add one product
-const addProduct = async (name, description, price, category) => {
+//add new product
+const addNewProduct = async (name, description, price, category) => {
   const newProduct = new Product({
     name,
     description,
@@ -42,9 +28,9 @@ const addProduct = async (name, description, price, category) => {
   return newProduct;
 };
 
-// update by id
+//update product
 const updateProduct = async (id, name, description, price, category) => {
-  const updatedProduct = await Product.findByIdAndUpdate(
+  const updateProduct = await Product.findByIdAndUpdate(
     id,
     {
       name,
@@ -52,22 +38,29 @@ const updateProduct = async (id, name, description, price, category) => {
       price,
       category,
     },
-    {
-      new: true,
-    }
+    { new: true }
   );
-  return updatedProduct;
+  return updateProduct;
 };
 
-// delete by id
+//delete product
 const deleteProduct = async (id) => {
   return await Product.findByIdAndDelete(id);
 };
 
+//get all products by category
+const getCategory = async (category) => {
+  const product = await Product.find(category);
+  return product;
+};
+
+
+
 module.exports = {
   getProducts,
-  addProduct,
   getProduct,
+  addNewProduct,
   updateProduct,
-  deleteProduct
+  deleteProduct,
+  getCategory,
 };
