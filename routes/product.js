@@ -17,7 +17,7 @@ router.get("/", async (req, res) => {
     const category = req.query.category;
     const page = req.query.page;
     const per_page = req.query.per_page;
-    const products = await getProducts(category, page, per_pag);
+    const products = await getProducts(category, page, per_page);
     res.status(200).send(products);
   } catch (error) {
     res.status(400).send({

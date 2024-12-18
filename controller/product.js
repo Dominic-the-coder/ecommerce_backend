@@ -21,7 +21,7 @@ const getProducts = async (category, page = 1, per_page = 6) => {
   const products = await Product.find(filter)
     .limit(per_page)
     .skip((page - 1) * per_page)
-    .sort(_id - 1);
+    .sort({ _id: -1 });
   return products;
 };
 
