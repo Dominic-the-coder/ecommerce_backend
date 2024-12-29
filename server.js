@@ -1,3 +1,4 @@
+require("dotenv").config();
 // import express
 const express = require("express");
 const mongoose = require("mongoose");
@@ -12,6 +13,7 @@ app.use(express.json());
 // setup cors policy
 app.use(cors());
 
+// connect to MongoDB
 mongoose
   .connect("mongodb://127.0.0.1:27017/ecommerce")
   .then(() => {
@@ -32,8 +34,11 @@ const productRoutes = require("./routes/product");
 
 app.use("/products", productRoutes);
 app.use("/categories", require("./routes/category"));
+app.use("/orders", require("./routes/order"));
+app.use("/payment", require("./routes/payment"));
 
 // start the server
 app.listen(5555, () => {
+  console.log(process.env);
   console.log("Server is running at http://localhost:5555");
 });

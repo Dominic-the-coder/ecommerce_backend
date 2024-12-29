@@ -9,7 +9,7 @@ const {
   addNewProduct,
   updateProduct,
   deleteProduct,
-} = require("../controller/product");
+} = require("../controllers/product");
 
 // get all the products. Pointing to /products
 router.get("/", async (req, res) => {
