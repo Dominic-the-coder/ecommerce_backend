@@ -3,10 +3,15 @@ const axios = require("axios");
 const Order = require("../models/order");
 
 // get all the orders
-const getOrders = async () => {};
+const getOrders = async () => {
+  return await Order.find().sort({ _id: -1 });
+};
 
 // get on order
-const getOrder = async (_id) => {};
+const getOrder = async (_id) => {
+  const order = await Order.findById(_id);
+  return order;
+};
 
 // add new order
 const addNewOrder = async (
@@ -56,10 +61,20 @@ const addNewOrder = async (
 };
 
 // update order
-const updateOrder = async () => {};
+const updateOrder = async (_id, status) => {
+  const updatedOrder = await Order.findByIdAndUpdate(
+    _id,
+    { status },
+    // return back the new data
+    { new: true }
+  );
+  return updatedOrder;
+};
 
 // delete order
-const deleteOrder = async (_id) => {};
+const deleteOrder = async (_id) => {
+  return await Order.findByIdAndDelete(_id);
+};
 
 module.exports = {
   getOrders,

@@ -36,9 +36,9 @@ app.use("/products", productRoutes);
 app.use("/categories", require("./routes/category"));
 app.use("/orders", require("./routes/order"));
 app.use("/payment", require("./routes/payment"));
+app.use("/auth", require("./routes/user"));
 
 // start the server
 app.listen(5555, () => {
-  console.log(process.env);
   console.log("Server is running at http://localhost:5555");
 });

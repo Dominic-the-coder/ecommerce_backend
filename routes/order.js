@@ -1,4 +1,5 @@
 const express = require("express");
+const mongoose = require("mongoose");
 // set up the order router
 const router = express.Router();
 // import all the order functions
@@ -12,13 +13,24 @@ const {
 
 /*
     GET /orders
-    GET /orders/:id
     POST /orders
     PUT /orders/:id
     DELETE /orders/:id
 */
 
-// create new order
+// GET /orders
+router.get("/", async (req, res) => {
+  try {
+    const orders = await getOrders();
+    res.status(200).send(orders);
+  } catch (error) {
+    res.status(400).send({
+      error: error._message,
+    });
+  }
+});
+
+// POST /orders - create new order
 router.post("/", async (req, res) => {
   try {
     // const customerName = req.body.customerName;
@@ -40,7 +52,59 @@ router.post("/", async (req, res) => {
     res.status(200).send(newOrder);
   } catch (error) {
     res.status(400).send({
-      error: error.message,
+      error: error._message,
+    });
+  }
+});
+
+// PUT /orders/:id - update the order status
+router.put("/:id", async (req, res) => {
+  try {
+    // Retrieve id from URL
+    const id = req.params.id;
+    // Retrieve the data from req.body
+    const status = req.body.status;
+    // Pass in the data into the updateOrder function
+    const updatedOrder = await updateOrder(id, status);
+    res.status(200).send(updatedOrder);
+  } catch (error) {
+    // If there is an error, return the error code
+    res.status(400).send({
+      error: error._message,
+    });
+  }
+});
+
+// DELETE /orders/:id - delete the order
+router.delete("/:id", async (req, res) => {
+  try {
+    // Retrieve the id from the URL
+    const id = req.params.id;
+    // Validate the ID format before querying the database
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+      return res.status(400).send({
+        error: `Invalid ID format: "${id}". A valid MongoDB ObjectId is required.`,
+      });
+    }
+    const order = await getOrder(id);
+    // If the order does not exist
+    if (!order) {
+      /* !order because it is returning either a single object or null */
+      return res.status(404).send({
+        error: `Error: No match for a order found with the id "${id}".`,
+      });
+    }
+    // Trigger the deleteOrder function
+    const status = await deleteOrder(id);
+    res.status(200).send({
+      status: "success",
+      message: `Order with the provided id #${id} has been deleted`,
+    });
+  } catch (error) {
+    console.log(error);
+    // If there is an error, return the error code
+    res.status(400).send({
+      error: error._message,
     });
   }
 });
