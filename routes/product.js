@@ -11,6 +11,8 @@ const {
   deleteProduct,
 } = require("../controllers/product");
 
+const { isValidUser, isAdmin } = require("../middleware/auth");
+
 // get all the products. Pointing to /products
 router.get("/", async (req, res) => {
   try {
@@ -50,13 +52,14 @@ router.get("/:id", async (req, res) => {
 });
 
 // add new product
-router.post("/", async (req, res) => {
+router.post("/", isAdmin, async (req, res) => {
   try {
     // Retrieve the data from req.body
     const name = req.body.name;
     const description = req.body.description;
     const price = req.body.price;
     const category = req.body.category;
+    const image = req.body.image;
     // Check for errors
     if (!name || !price || !category) {
       return res.status(400).send({
@@ -64,7 +67,13 @@ router.post("/", async (req, res) => {
       });
     }
     // If no errors, pass in all the data to addNewProduct function from controller
-    const newProduct = await addNewProduct(name, description, price, category);
+    const newProduct = await addNewProduct(
+      name,
+      description,
+      price,
+      category,
+      image
+    );
     res.status(200).send(newProduct);
   } catch (error) {
     console.log(error);
@@ -76,7 +85,7 @@ router.post("/", async (req, res) => {
 });
 
 // 4
-router.put("/:id", async (req, res) => {
+router.put("/:id", isAdmin, async (req, res) => {
   try {
     // Retrieve id from URL
     const id = req.params.id;
@@ -85,13 +94,15 @@ router.put("/:id", async (req, res) => {
     const description = req.body.description;
     const price = req.body.price;
     const category = req.body.category;
+    const image = req.body.image;
     // Pass in the data into the updateProduct function
     const updatedProduct = await updateProduct(
       id,
       name,
       description,
       price,
-      category
+      category,
+      image
     );
     res.status(200).send(updatedProduct);
   } catch (error) {
@@ -103,7 +114,7 @@ router.put("/:id", async (req, res) => {
 });
 
 // 5
-router.delete("/:id", async (req, res) => {
+router.delete("/:id", isAdmin, async (req, res) => {
   try {
     // Retrieve the id from the URL
     const id = req.params.id;

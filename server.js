@@ -13,6 +13,9 @@ app.use(express.json());
 // setup cors policy
 app.use(cors());
 
+// set a folder as a static path
+app.use("/uploads", express.static("uploads"));
+
 // connect to MongoDB
 mongoose
   .connect("mongodb://127.0.0.1:27017/ecommerce")
@@ -37,6 +40,7 @@ app.use("/categories", require("./routes/category"));
 app.use("/orders", require("./routes/order"));
 app.use("/payment", require("./routes/payment"));
 app.use("/auth", require("./routes/user"));
+app.use("/image", require("./routes/image"));
 
 // start the server
 app.listen(5555, () => {

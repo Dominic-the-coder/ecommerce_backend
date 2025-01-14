@@ -3,6 +3,11 @@ const jwt = require("jsonwebtoken");
 
 const User = require("../models/user");
 
+// get user by email
+async function getUserByEmail(email) {
+  return await User.findOne({ email });
+}
+
 // generate JWT token
 function generateJWTtoken(_id, name, email, role) {
   return jwt.sign(
@@ -14,7 +19,7 @@ function generateJWTtoken(_id, name, email, role) {
     },
     process.env.JWT_SECRET,
     {
-      expiresIn: "30d"
+      expiresIn: 60 * 60 * 24 * 30, // 30 days
     }
   );
 }
@@ -89,4 +94,5 @@ const signup = async (name, email, password) => {
 module.exports = {
   login,
   signup,
+  getUserByEmail,
 };
