@@ -14,7 +14,7 @@ app.use(express.json());
 app.use(cors());
 
 // set a folder as a static path
-app.use("/uploads", express.static("uploads"));
+app.use("/api/uploads", express.static("uploads"));
 
 // connect to MongoDB
 mongoose
@@ -35,12 +35,12 @@ app.get("/", (req, res) => {
 // import all the routes
 const productRoutes = require("./routes/product");
 
-app.use("/products", productRoutes);
-app.use("/categories", require("./routes/category"));
-app.use("/orders", require("./routes/order"));
-app.use("/payment", require("./routes/payment"));
-app.use("/auth", require("./routes/user"));
-app.use("/image", require("./routes/image"));
+app.use("/api/products", productRoutes);
+app.use("/api/categories", require("./routes/category"));
+app.use("/api/orders", require("./routes/order"));
+app.use("/api/payment", require("./routes/payment"));
+app.use("/api/auth", require("./routes/user"));
+app.use("/api/image", require("./routes/image"));
 
 // start the server
 app.listen(5555, () => {
