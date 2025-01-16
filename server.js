@@ -18,7 +18,7 @@ app.use("/api/uploads", express.static("uploads"));
 
 // connect to MongoDB
 mongoose
-  .connect("mongodb://127.0.0.1:27017/ecommerce")
+  .connect(process.env.MONGODB_URL + "/ecommerce")
   .then(() => {
     // if mongodb is successfully connected
     console.log("MongoDB is connected");
